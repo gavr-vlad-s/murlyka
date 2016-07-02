@@ -54,7 +54,7 @@ emptyInfo =
         libraries      = "",
         library_dirs   = ""}
 
-parser ::[SC.Lexem]->Either String Info
+parser :: [SC.Lexem]->Either String Info
 parser ls =
   if not . null $ messages' then
     Left messages'
@@ -64,7 +64,7 @@ parser ls =
     (_,_,info,messages)=Lists.foldl' nextParserAccum (A,head ls,emptyInfo,[]) ls
     messages'= unlines . filter (not . null) . reverse $ messages
 
-type ParserAccum=(ParserState,SC.Lexem,Info,[Message])
+type ParserAccum = (ParserState,SC.Lexem,Info,[Message])
 {-- 
   Первый элемент кортежа --- текущее состояние парсера,
   второй элемент --- сохранённая на данный момент лексема,
@@ -162,12 +162,12 @@ classification (t,_)=
     SC.Str _ -> ClassN
     _        -> ClassM
 
-ik_classification::IdKeyw->LexemClass
+ik_classification :: IdKeyw -> LexemClass
 ik_classification (Ident _)=ClassM
 ik_classification i
-  |(i==Project)                               = ClassA
-  |(i `elem` [Compiler,Linker,Makefile_name]) = ClassB
-  |otherwise                                 = ClassC
+  | (i == Project)                             = ClassA
+  | (i `elem` [Compiler,Linker,Makefile_name]) = ClassB
+  | otherwise                                  = ClassC
 
 d_classification::Delims->LexemClass
 d_classification LP=ClassK
@@ -179,7 +179,7 @@ modification (old_t,_) st l@(t,_) i
   |(st `elem` [C,F])     && (lc==ClassM) = set_str_field old_t i . fromIdent . fromIK $ t
   |(st `elem` [A,B,E,H]) && (lc==ClassN) = setMainFile i t
   |(st `elem` [D,G])     && (lc==ClassN) = set_str_field old_t i . fromStr $ t
-  |otherwise                           = i
+  |otherwise                             = i
   where 
     lc= classification l
 
@@ -231,6 +231,12 @@ set_include_dirs i p =i {include_dirs=p}
 set_makefile_name::Info->String->Info
 set_makefile_name i p = i {makefile_name=p}
 
+set_libraries :: Info -> String -> Info
+set_libraries i p = i {libraries = p}
+
+set_library_dirs :: Info -> String -> Info
+set_library_dirs i p = i {library_dirs = p}
+
 fromIK::SC.Token->IdKeyw
 fromIK (SC.IK s) = s
 fromIK _         = error "Ожидается ключевое слово или идентификатор."
@@ -246,15 +252,17 @@ fromStr _          = error "Ожидается строковый литерал
 set_str_field::SC.Token->Info->String->Info
 set_str_field t i s=
   case t' of
-    Compiler       -> set_compiler i s 
-    Linker         -> set_linker i s 
-    Makefile_name  -> set_makefile_name i s 
+    Compiler       -> set_compiler       i s 
+    Linker         -> set_linker         i s 
+    Makefile_name  -> set_makefile_name  i s 
     Compiler_flags -> set_compiler_flags i s 
-    Linker_flags   -> set_linker_flags i s 
-    Source_dir     -> set_source_dir i s 
-    Source_exts    -> set_source_exts i s 
-    Build_dir      -> set_build_dir i s 
-    Include_dirs   -> set_include_dirs i s 
+    Linker_flags   -> set_linker_flags   i s 
+    Source_dir     -> set_source_dir     i s 
+    Source_exts    -> set_source_exts    i s 
+    Build_dir      -> set_build_dir      i s 
+    Include_dirs   -> set_include_dirs   i s 
+    Libraies       -> set_libraries      i s
+    Library_dirs   -> set_library_dirs   i s
     _              -> i
   where
     t' = fromIK t
