@@ -3,12 +3,12 @@
 
 name:                murlyka
 version:             0.1.0.0
-synopsis:            Makefile generator[D[D[D[D[e[D[e[C[C[C[C[C[C[C
+synopsis:            Makefile generator
 -- description:         
 license:             GPL-3
 license-file:        LICENSE
-author:              Evgenia
-maintainer:          geva140395@gmail.com
+author:              Vladimir
+maintainer:          vladimir.s.gavrilov@gmail.com
 -- copyright:           
 category:            System
 build-type:          Simple

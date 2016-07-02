@@ -28,7 +28,7 @@ data Info = Info { project        :: Project_Title ,
                    library_dirs   :: String }
   deriving (Eq,Ord,Show)
 
-data Project_Title=Project_Title{name::String,main_file::String}
+data Project_Title = Project_Title{name::String,main_file::String}
   deriving(Eq, Ord, Show)
 
 data ParserState = A | B | C | D | E | F | G | H | I
@@ -36,21 +36,23 @@ data ParserState = A | B | C | D | E | F | G | H | I
 
 type Message = String
 
-emptyProject::Project_Title
+emptyProject :: Project_Title
 emptyProject = Project_Title{name="", main_file=""}
 
-emptyInfo::Info
-emptyInfo= 
-  Info {project=emptyProject,
-        compiler="",
-        compiler_flags="",
-        linker="",
-        linker_flags="",
-        source_dir="",
-        source_exts="",
-        build_dir="",
-        include_dirs="",
-        makefile_name=""}
+emptyInfo :: Info
+emptyInfo = 
+  Info {project        = emptyProject,
+        compiler       = "",
+        compiler_flags = "",
+        linker         = "",
+        linker_flags   = "",
+        source_dir     = "",
+        source_exts    = "",
+        build_dir      = "",
+        include_dirs   = "",
+        makefile_name  = "",
+        libraries      = "",
+        library_dirs   = ""}
 
 parser ::[SC.Lexem]->Either String Info
 parser ls =
