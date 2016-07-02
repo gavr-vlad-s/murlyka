@@ -56,7 +56,7 @@ correctPNandMainfile i
   |(null pn)         && (null mf)         = i{proj_name = "main", main_f="main.cpp"}
   |(null pn)         && (not . null $ mf) = i{proj_name = dropExtension  mf}
   |(not . null $ pn) && (null mf)         = i{main_f = pn ++ ".cpp"}
-  |otherwise                             = i 
+  |otherwise                              = i 
   where
     pn = proj_name i
     mf = main_f    i 
@@ -131,13 +131,35 @@ makefileText i = do
     rules_for_srcs i,
     bin_sec i]
 
-cppLinkerCompilerBin::Info1->String
+ldirs :: Info1 -> String
+ldirs i =
+  if null lds then
+    ""
+  else
+    "\nLIBDIRS     = " ++ minusL 
+  where
+   lds    = library_directories i
+   minusL = Lists.intercalate " " . map (\x -> "-L" ++ x) $ lds
+
+libs :: Info1 -> String
+libs i =
+  if null ls then
+    ""
+  else
+    "\nLIBS        = " ++ minusl 
+  where
+   ls    = libraries_list i
+   minusl = Lists.intercalate " " . map (\x -> "-l" ++ x) $ ls
+
+cppLinkerCompilerBin :: Info1->String
 cppLinkerCompilerBin i =
   "LINKER      = " ++ linker_name   i ++ "\n" ++
   "LINKERFLAGS = " ++ linker_flgs   i ++ "\n" ++
   "CXX         = " ++ compiler_name i ++ "\n" ++
   "CXXFLAGS    = " ++ compiler_flgs i ++ "\n" ++
-  "BIN         = " ++ proj_name     i
+  "BIN         = " ++ proj_name     i ++
+  ldirs i                             ++
+  libs  i
 
 phony::String
 phony=".PHONY: all all-before all-after clean clean-custom"
@@ -196,10 +218,12 @@ rules_for_srcs i =
     incl = includes i
     b    = build_d  i
 
-bin_sec::Info1->String
+bin_sec :: Info1->String
 bin_sec i =
   "$(BIN):$(OBJ)\n\t"++
-  "$(LINKER) -o $(BIN) $(LINKOBJ) $(LINKERFLAGS)\n\t"++
+  "$(LINKER) -o $(BIN) $(LINKOBJ) " ++ 
+  (if null . library_directories $ i then "" else "$(LIBDIRS) " ) ++ 
+  (if null .  libraries_list     $ i then "" else "$(LIBS) ") ++ "$(LINKERFLAGS)\n\t"++
   if null b then "" else ("mv $(BIN) ./"++ b)
   where
     b=build_d i
