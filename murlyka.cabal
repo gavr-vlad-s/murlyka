@@ -18,7 +18,8 @@ cabal-version:       >=1.10
 executable murlyka
   main-is:             Main.hs
   other-modules:       Delimiters, MakeContents, Scaner, StringLiterals,
-                       IdKeywords, Parser,       Split,  UnknownLexem
+                       IdKeywords, Parser,       Split,  UnknownLexem,
+                       StripSpaces
   -- other-extensions:    
   build-depends:       base >=4.8, 
                        containers >=0.5, 
