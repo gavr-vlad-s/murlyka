@@ -3,39 +3,47 @@ module MakeContents(
 ) where
 
 import qualified Data.List        as Lists
-import          System.Directory
-import          Split
-import          System.FilePath
-import          Parser
+import           System.Directory
+import           Split
+import           System.FilePath
+import           Parser
 import qualified Scaner           as SC
+import           StripSpaces
 
-data Info1=Info1{proj_name    :: String,
-                main_f       :: String,
-                compiler_name:: String,
-                compiler_flgs:: String,
-                linker_flgs  :: String,
-                linker_name  :: String,
-                src_dir      :: String,
-                src_exts     :: [String],
-                build_d      :: String,
-                incl_dirs    :: [String],
-                makefile_n   :: String }
+data Info1=Info1{proj_name          :: String,
+                main_f              :: String,
+                compiler_name       :: String,
+                compiler_flgs       :: String,
+                linker_flgs         :: String,
+                linker_name         :: String,
+                src_dir             :: String,
+                src_exts            :: [String],
+                build_d             :: String,
+                incl_dirs           :: [String],
+                makefile_n          :: String,
+                library_directories :: [String],
+                libraries_list      :: [String] }
   deriving (Eq,Ord,Show)
 
-convertInfo::Info->Either String Info1
+splitBySemicolon :: String -> [String]
+splitBySemicolon = filter (not . null . stripSpaces) . splitBy ';'
+
+convertInfo :: Info->Either String Info1
 convertInfo i = Right i1
   where
-    i1=Info1{proj_name     = name . project $ i,
-             main_f        = main_file . project $ i,
-             compiler_name = compiler i,
-             compiler_flgs = compiler_flags i,
-             linker_name   = linker i,
-             src_dir       = source_dir i,
-             src_exts      = Lists.words . source_exts $ i,
-             linker_flgs   = linker_flags i,
-             build_d       = build_dir i,
-             incl_dirs     = filter (not . null) . splitBy ';' $ include_dirs i,
-             makefile_n    = makefile_name i }
+    i1=Info1{proj_name           = name . project $ i,
+             main_f              = main_file . project $ i,
+             compiler_name       = compiler i,
+             compiler_flgs       = compiler_flags i,
+             linker_name         = linker i,
+             src_dir             = source_dir i,
+             src_exts            = Lists.words . source_exts $ i,
+             linker_flgs         = linker_flags i,
+             build_d             = build_dir i,
+             incl_dirs           = splitBySemicolon $ include_dirs i,
+             makefile_n          = makefile_name i,
+             library_directories = splitBySemicolon $ library_dirs i,
+             libraries_list      = Lists.words . libraries $ i}
 
 correctInfo1::Info1->Either String Info1
 correctInfo1 = 
