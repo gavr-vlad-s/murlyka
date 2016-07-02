@@ -6,8 +6,10 @@ module IdKeywords(
 import qualified Data.Map as Maps
 import qualified Data.Set as Sets
 
-data IdKeyw=Project | Compiler | Compiler_flags | Linker | Linker_flags | Source_dir |
-  Source_exts | Build_dir | Include_dirs | Makefile_name | Ident String
+data IdKeyw = 
+  Project    | Compiler     | Compiler_flags | Linker       | Linker_flags  | 
+  Source_dir |  Source_exts | Build_dir      | Include_dirs | Makefile_name | 
+  Libraies   | Library_dirs | Ident String
   deriving(Eq,Ord,Show)
 
 id_chars::Sets.Set Char
@@ -18,16 +20,18 @@ is_id_char c = c `Sets.member` id_chars
 
 keywords::Maps.Map String IdKeyw
 keywords=Maps.fromList[
-  ("project",Project),
-  ("compiler",Compiler),
-  ("compiler_flags",Compiler_flags),
-  ("linker",Linker),
-  ("linker_flags",Linker_flags),
-  ("source_dir",Source_dir),
-  ("source_exts",Source_exts),
-  ("build_dir",Build_dir),
-  ("include_dirs",Include_dirs),
-  ("makefile_name",Makefile_name)]
+  ("project",        Project),
+  ("compiler",       Compiler),
+  ("compiler_flags", Compiler_flags),
+  ("linker",         Linker),
+  ("linker_flags",   Linker_flags),
+  ("source_dir",     Source_dir),
+  ("source_exts",    Source_exts),
+  ("build_dir",      Build_dir),
+  ("include_dirs",   Include_dirs),
+  ("makefile_name",  Makefile_name),
+  ("libraries",      Libraies),
+  ("library_dirs",   Library_dirs)]
 
 idKeyword::String->(String,IdKeyw)
 idKeyword y=
