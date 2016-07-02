@@ -10,16 +10,16 @@ data IdKeyw =
   Project    | Compiler     | Compiler_flags | Linker       | Linker_flags  | 
   Source_dir |  Source_exts | Build_dir      | Include_dirs | Makefile_name | 
   Libraies   | Library_dirs | Ident String
-  deriving(Eq,Ord,Show)
+  deriving (Eq,Ord,Show)
 
-id_chars::Sets.Set Char
-id_chars=Sets.fromList$['A'..'Z']++['a'..'z']++['0'..'9']++['-','+','_','.']
+id_chars :: Sets.Set Char
+id_chars = Sets.fromList $ ['A'..'Z']++['a'..'z']++['0'..'9']++['-','+','_','.']
 
-is_id_char::Char->Bool
+is_id_char :: Char->Bool
 is_id_char c = c `Sets.member` id_chars
 
-keywords::Maps.Map String IdKeyw
-keywords=Maps.fromList[
+keywords :: Maps.Map String IdKeyw
+keywords = Maps.fromList[
   ("project",        Project),
   ("compiler",       Compiler),
   ("compiler_flags", Compiler_flags),
@@ -33,7 +33,7 @@ keywords=Maps.fromList[
   ("libraries",      Libraies),
   ("library_dirs",   Library_dirs)]
 
-idKeyword::String->(String,IdKeyw)
-idKeyword y=
+idKeyword :: String->(String,IdKeyw)
+idKeyword y =
   (hvst, maybe (Ident ik) id $ Maps.lookup ik keywords)
   where (ik,hvst)=span is_id_char y 

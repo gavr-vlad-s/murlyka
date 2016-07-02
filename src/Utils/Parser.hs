@@ -14,16 +14,18 @@ import qualified Scaner as SC
 data LexemClass= ClassA | ClassB | ClassC | ClassK | ClassM | ClassL | ClassN 
   deriving (Eq,Ord,Show)
 
-data Info = Info { project::Project_Title ,
-                   compiler:: String ,
-                   compiler_flags::String ,
-                   linker::String ,
-                   linker_flags::String ,
-                   source_dir::String ,
-                   source_exts::String ,
-                   build_dir::String ,
-                   include_dirs::String ,
-                   makefile_name::String }
+data Info = Info { project        :: Project_Title ,
+                   compiler       :: String ,
+                   compiler_flags :: String ,
+                   linker         :: String ,
+                   linker_flags   :: String ,
+                   source_dir     :: String ,
+                   source_exts    :: String ,
+                   build_dir      :: String ,
+                   include_dirs   :: String ,
+                   makefile_name  :: String,
+                   libraries      :: String,
+                   library_dirs   :: String }
   deriving (Eq,Ord,Show)
 
 data Project_Title=Project_Title{name::String,main_file::String}
