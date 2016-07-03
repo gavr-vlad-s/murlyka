@@ -136,30 +136,47 @@ ldirs i =
   if null lds then
     ""
   else
-    "\nLIBDIRS     = " ++ minusL 
+    "\nLIBDIRS       = " ++ minusL 
   where
    lds    = library_directories i
-   minusL = Lists.intercalate " " . map (\x -> "-L" ++ "\"" ++ x ++ "\"") $ lds
+   minusL = Lists.intercalate " " . map (\x -> "-L\"" ++ x ++ "\"") $ lds
 
 libs :: Info1 -> String
 libs i =
   if null ls then
     ""
   else
-    "\nLIBS        = " ++ minusl 
+    "\nLIBS          = " ++ minusl 
   where
-   ls    = libraries_list i
+   ls     = libraries_list i
    minusl = Lists.intercalate " " . map (\x -> "-l" ++ x) $ ls
+
+-- includes::Info1->String
+-- includes i =
+--   Lists.intercalate " " . map (\x-> "-I\""++x++ "\"") $ incl
+--   where 
+--     incl = incl_dirs i
+
+incls :: Info1 -> String
+incls i =
+  if null incl then
+    ""
+  else
+    "\nINCLUDE       = " ++ minusI
+  where
+    incl   = incl_dirs i
+    minusI = Lists.intercalate " " . map (\x-> "-I\""++x++ "\"") $ incl
 
 cppLinkerCompilerBin :: Info1->String
 cppLinkerCompilerBin i =
-  "LINKER      = " ++ linker_name   i ++ "\n" ++
-  "LINKERFLAGS = " ++ linker_flgs   i ++ "\n" ++
-  "CXX         = " ++ compiler_name i ++ "\n" ++
-  "CXXFLAGS    = " ++ compiler_flgs i ++ "\n" ++
-  "BIN         = " ++ proj_name     i ++
+  "LINKER        = " ++ linker_name   i ++ "\n" ++
+  "LINKERFLAGS   = " ++ linker_flgs   i ++ "\n" ++
+  "COMPILER      = " ++ compiler_name i ++ "\n" ++
+  "COMPILERFLAGS = " ++ compiler_flgs i ++ "\n" ++
+  "BIN           = " ++ proj_name     i ++
   ldirs i                             ++
-  libs  i
+  libs  i                             ++
+  incls i
 
 phony::String
 phony=".PHONY: all all-before all-after clean clean-custom"
@@ -175,12 +192,6 @@ clean i =
   where
     b      = build_d i
     prefix = if not . null $ b then "./" ++ b ++ "/"  else "./"
-
-includes::Info1->String
-includes i =
-  Lists.intercalate " " . map (\x-> "-I\""++x++ "\"") $ incl
-  where 
-    incl = incl_dirs i
 
 src_vpath::Info1->String
 src_vpath i = 
@@ -210,20 +221,21 @@ vpath i = if null v then "" else "\n" ++ v
 rules_for_srcs::Info1->String
 rules_for_srcs i = 
   Lists.intercalate "\n\n" . map (
-    \e-> "." ++ e ++ ".o:\n\t" ++ "$(CXX) -c $< -o $@ $(CXXFLAGS) " ++ incl ++
+    \e-> "." ++ e ++ ".o:\n\t" ++ "$(COMPILER) -c $< -o $@ $(COMPILERFLAGS) " ++ 
+         (if not . null $ incl then "$(INCLUDE)" else "")  ++
          (if not . null $ b then "\n\t" ++ "mv $@ ./" ++ b else "") 
   ) $ exts
   where 
-    exts = src_exts i
-    incl = includes i
-    b    = build_d  i
+    exts = src_exts  i
+    incl = incl_dirs i
+    b    = build_d   i
 
 bin_sec :: Info1->String
 bin_sec i =
   "$(BIN):$(OBJ)\n\t"++
   "$(LINKER) -o $(BIN) $(LINKOBJ) " ++ 
   (if null . library_directories $ i then "" else "$(LIBDIRS) " ) ++ 
-  (if null .  libraries_list     $ i then "" else "$(LIBS) ") ++ "$(LINKERFLAGS)\n\t"++
+  (if null . libraries_list      $ i then "" else "$(LIBS) ") ++ "$(LINKERFLAGS)\n\t"++
   if null b then "" else ("mv $(BIN) ./"++ b)
   where
     b=build_d i
@@ -244,7 +256,7 @@ obj' i = do
 obj :: Info1 -> IO String
 obj i = do
   o' <- obj' i
-  return $ "\nOBJ         = " ++ o'
+  return $ "\nOBJ           = " ++ o'
 
 linkobj' :: Info1 -> IO String
 linkobj' i = do
@@ -257,7 +269,7 @@ linkobj' i = do
 linkobj :: Info1 ->  IO String
 linkobj i = do 
   lo' <- linkobj' i
-  return $ "\nLINKOBJ     = " ++ lo'
+  return $ "\nLINKOBJ       = " ++ lo'
 
 srcdir :: Info1-> IO String
 srcdir i =

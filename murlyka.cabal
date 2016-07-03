@@ -2,7 +2,7 @@
 -- documentation, see http://haskell.org/cabal/users-guide/
 
 name:                murlyka
-version:             0.2.0.0
+version:             1.0.0.0
 synopsis:            Makefile generator
 -- description:         
 license:             GPL-3
