@@ -26,7 +26,7 @@ data Info1=Info1{proj_name          :: String,
   deriving (Eq,Ord,Show)
 
 splitBySemicolon :: String -> [String]
-splitBySemicolon = filter (not . null . stripSpaces) . splitBy ';'
+splitBySemicolon = filter (not . null) . map stripSpaces . splitBy ';'
 
 convertInfo :: Info->Either String Info1
 convertInfo i = Right i1
@@ -139,7 +139,7 @@ ldirs i =
     "\nLIBDIRS     = " ++ minusL 
   where
    lds    = library_directories i
-   minusL = Lists.intercalate " " . map (\x -> "-L" ++ x) $ lds
+   minusL = Lists.intercalate " " . map (\x -> "-L" ++ "\"" ++ x ++ "\"") $ lds
 
 libs :: Info1 -> String
 libs i =
