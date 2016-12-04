@@ -66,10 +66,10 @@ parser ls =
 
 type ParserAccum = (ParserState,SC.Lexem,Info,[Message])
 {-- 
-  Первый элемент кортежа --- текущее состояние парсера,
-  второй элемент --- сохранённая на данный момент лексема,
-  третий элемент --- текущие сведения,
-  четвёртый элемент --- список сообщений об ошибке.
+  First element of the tuple is a parser current state,
+  second element is currently stored lexem,
+  third element is current info,
+  fourth element is a list of error messages.
 --}
 
 nextParserAccum :: ParserAccum -> SC.Lexem -> ParserAccum
@@ -128,6 +128,9 @@ avral_jump (st,ClassM) n =
     _->(H,d)
   where d=(diagnostic ! st) n
 
+expected_str :: Int -> String -> String
+expected_str l es = es ++ " expected at the line " ++ show l ++ "."
+
 diagnostic::Array ParserState (Int->String)
 diagnostic = listArray (A,I) [
   expected_abc,expected_k,
@@ -136,23 +139,23 @@ diagnostic = listArray (A,I) [
   expected_n,expected_ln,
   expected_l ]
 
-expected_abc::Int->String
-expected_abc n = "В строке "++ show n++ " ожидается ключевое слово." 
+expected_abc :: Int -> String
+expected_abc n = expected_str n "Keyword"
 
-expected_k::Int->String
-expected_k n = "В строке "++ show n ++ " ожидается (."
+expected_k   :: Int -> String
+expected_k   n = expected_str n "("
 
-expected_m::Int->String
-expected_m n = "В строке " ++ show n ++ " ожидается идентификатор."
+expected_m   :: Int -> String
+expected_m   n = expected_str n "Identifier"
 
-expected_l::Int->String
-expected_l n = "В строке " ++ show n ++ " ожидается )."
+expected_l   :: Int -> String
+expected_l   n = expected_str n ")"
 
-expected_n::Int->String
-expected_n n = "В строке " ++ show n ++ " ожидается строковый литерал."
+expected_n   :: Int -> String
+expected_n   n = expected_str n "String literal"
 
-expected_ln::Int->String
-expected_ln n = "В строке " ++ show n ++ " ожидается ) или строковый литерал."
+expected_ln  :: Int -> String
+expected_ln  n = expected_str n ") or string literal"
 
 classification::SC.Lexem->LexemClass
 classification (t,_)=
@@ -239,15 +242,15 @@ set_library_dirs i p = i {library_dirs = p}
 
 fromIK::SC.Token->IdKeyw
 fromIK (SC.IK s) = s
-fromIK _         = error "Ожидается ключевое слово или идентификатор."
+fromIK _         = error "Expected keyword or identifier."
 
 fromIdent:: IdKeyw->String
 fromIdent (Ident s) = s 
-fromIdent _         = error "Ожидается идентификатор."
+fromIdent _         = error "Expected identifier."
 
 fromStr::SC.Token->String
 fromStr (SC.Str s) = s 
-fromStr _          = error "Ожидается строковый литерал."
+fromStr _          = error "Expected string literal."
 
 set_str_field::SC.Token->Info->String->Info
 set_str_field t i s=
