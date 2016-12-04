@@ -25,7 +25,7 @@ getToken :: String->Int->(String,Token,String)
 getToken s n = getToken' (dropWhile Chars.isSpace s) n
 
 unknown_msg :: Int -> String
-unknown_msg n = "Нераспознаваемая лексема в строке " ++ show n
+unknown_msg n = "Unrecognized lexem at the line " ++ show n ++ "."
 
 type Lexem = (Token,Int)
 
