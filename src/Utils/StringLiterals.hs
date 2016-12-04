@@ -31,4 +31,4 @@ stringAccumulate' y@(x:xs) v C =
     stringAccumulate' xs ('\"':v) B
 
 unexpectedEnd::String
-unexpectedEnd = "Неожиданное окончание строкового литерала в строке "
+unexpectedEnd = "Unexpected end of the string literal at the line."
