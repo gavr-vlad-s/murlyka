@@ -151,12 +151,6 @@ libs i =
    ls     = libraries_list i
    minusl = Lists.intercalate " " . map (\x -> "-l" ++ x) $ ls
 
--- includes::Info1->String
--- includes i =
---   Lists.intercalate " " . map (\x-> "-I\""++x++ "\"") $ incl
---   where 
---     incl = incl_dirs i
-
 incls :: Info1 -> String
 incls i =
   if null incl then
