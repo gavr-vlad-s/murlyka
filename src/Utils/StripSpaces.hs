@@ -7,8 +7,8 @@ import qualified Data.List as Lists
 import           Data.Char
 
 {--
-  Данная функция отбрасывает пробельные символы вначале и в конце
-  строки--аргумента.
+  This function discards any whitespace characters at the beginning 
+  and end of the argument.
 --}
 stripSpaces :: String -> String
 stripSpaces = Lists.dropWhileEnd isSpace . dropWhile isSpace
