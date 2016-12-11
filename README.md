@@ -19,32 +19,32 @@ them by Haskell compiler, and to run resulting program. Resulting program will b
 
 Input file consists of an arbitrary sequence the following commands (this sequence can be empty):
 
-- project(project\_name main\_file)
+- _project_(project\_name main\_file)
 
-- compiler(compiler\_name)
+- _compiler_(compiler\_name)
 
-- compiler\_flags(compiler\_flags)
+- _compiler\_flags_(compiler\_flags)
 
-- linker(linker\_name)
+- _linker_(linker\_name)
 
-- linker\_flags(linker\_flags)
+- _linker\_flags_(linker\_flags)
 
-- source\_dir(directory\_with\_source\_files)
+- _source\_dir_(directory\_with\_source\_files)
 
-- source\_exts(source\_files\_extensions)
+- _source\_exts_(source\_files\_extensions)
 
-- build\_dir(directory\_for\_object\_files\_and\_for\_program)
+- _build\_dir_(directory\_for\_object\_files\_and\_for\_program)
  
-- include_dirs(list\_of\_directories\_for\_header\_files)
+- _include_dirs_(list\_of\_directories\_for\_header\_files)
 
-- makefile\_name(name\_for\_Makefile)
+- _makefile\_name_(name\_for\_Makefile)
 
-- libraries(list\_of\_linked\_libraries)
+- _libraries_(list\_of\_linked\_libraries)
 
-- library\_dirs(directory\_lst\_to\_search\_libraries)
+- _library\_dirs_(directory\_lst\_to\_search\_libraries)
 
-Command 'project' specifies the project name and the name of the main file (i.e. the name of the file containing function 'main').
- Имя головного файла является необязательным. В этом случае именем головного файла является имя проекта с преписанным к нему расширением cpp. Если команда не задана, то головной файл называется main.cpp, а имя проекта будет main.  
+Command _project_ specifies the project name and the name of the main file (i.e. the name of the file containing function 'main'). The name of the main file is optional. The default name of the main file is the project name with prepended
+extension cpp. If command _project_ is not specified, then the name of the main file is 'main.cpp' and the project name is 'main'.  
 Команда compiler задаёт имя используемого компилятора. 
 По умолчанию (если эта команда не задана) используется компилятор g++.  
 Команда compiler\_flags определяет флаги, передаваемые компилятором. Флаги по умолчанию: -O3 -Wall -std=c++14.  
