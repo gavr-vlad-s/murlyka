@@ -45,33 +45,31 @@ Input file consists of an arbitrary sequence the following commands (this sequen
 
 Command _project_ specifies the project name and the name of the main file (i.e. the name of the file containing function 'main'). The name of the main file is optional. The default name of the main file is the project name with prepended
 extension cpp. If command _project_ is not specified, then the name of the main file is 'main.cpp' and the project name is 'main'.  
-Команда compiler задаёт имя используемого компилятора. 
-По умолчанию (если эта команда не задана) используется компилятор g++.  
-Команда compiler\_flags определяет флаги, передаваемые компилятором. Флаги по умолчанию: -O3 -Wall -std=c++14.  
-Команда linker определяет имя компановщика. По умолчанию это - имя компилятора.  
-Команда linker\_flags определяет флаги компановщика. Флаги по умолчанию: -s.  
-Команда source\_dir определяет каталог с исходными текстами (имеется в виду файлы с расширениями cpp, c++, cxx).  По умолчанию это - текущий каталог.  
-Команда source\_exts задаёт расширение файлов с исходным текстом (расширение заголовочных файлов сюда включать не нужно).  
-Команда build\_dir определяет каталог, в котором будут находиться объектные файлы и исполняемый файл. Если эта команда не задана, то они будут находиться в корневом каталоге проекта.  
-Команда include\_dirs определяет где находится заголовочные файлы для внешних библиотек.  
-Команда makefile\_name задаёт имя генерируемого Makefile'а. По умолчанию используется имя Makefile.
-
-Команда libraries определяет заключённый в кавычки список имён подключаемых библиотек, разделённых пробельными символами. Формат имени таков: не нужно указывать префикс lib и суффикс .a.
-
-Команда library\_dirs определяет список путей поиска для подключаемых библиотек.
+Command _compiler_ specifies a used compiler name. The default compiler name is 'g++'.  
+Command _compiler\_flags_ specifies the compiler flags. The default compiler flags are '-O3 -Wall -std=c++14'.  
+Command _linker_ defines the linker name. The default linker name is the compiler name.  
+Command _linker\_flags_ specifies the linker flags. The default flags is '-s'.  
+Command _source\_dir_ specifies the directory with source code (files with extensions cpp, c++, cxx). The default directory is the current directory.  
+Command _source\_exts_ specifies source files extensions (fextensions cpp, c++, cxx, and so on, except header files extensions).  
+Command _build\_dir_ specifies a directory with object files and with an executable file. If this command is not specified, the object files and an executable file will be in the root directory of the project.  
+Command _include\_dirs_ specifies the location of header files for external libraries.  
+Command _makefile\_name_ specifies the name of the generated Makefile. The default name of Makefile is Makefile.  
+Command _libraries_ specifies a quoted list of names linked libraries, separated by whitespace chars (i.e. spaces and tabulations). Name format is as follows: you should not include the prefix lib and the suffix .a.  
+Command _library\_dirs_ specifies a quoted list of paths for external libraries search.  
  
- Здесь project\_name, name\_for\_Makefile, compiler\_name, linker\_name - идентификаторы. Все прочие аргументы вышеуказанных команд являются строковыми литералами. Под идентификатором понимается любая непустая последовательность латинских букв, десятичных цифр, знаков '+' и '-', знака подчёркивания и точки. Под строковым литералом понимается любая (в том числе и пустая) последовательность символов, заключённая в двойные кавычки. При этом если в строковом литерале нужно указать двойную кавычку, то её следует удвоить.   
- Строковый литерал, являющийся значением аргумента команды source\_exts, представляет из себя список расширений файлов с исходным текстом, разделённых пробельными символами, т.е. пробелами и табуляциями. Расширения нужно указывать без ведущей точки.
+Here _project\_name_, _name\_for\_Makefile_, _compiler\_name_, _linker\_name_ are identifiers. All other arguments are string literals. Here an identifier is any non-empty sequence of Latin letters, decimal digits, characters '+' and '-', 
+underscore and dot; string literal is any (including empty) sequence of characters enclosed in double quotes. If in a string literal you need to specify a double quote, it should be doubled.   
+A string literal that is the value of the argument of the command _source\_exts_ is a list of source code files extensions, delimited by whitespace characters. Extensions must be specified without begin point.  
  
- Аргумент команды include\_dirs содержит в себе список разделённых точками с запятыми путей к каталогам, содержащим заголовочные файлы для внешних библиотек.
+The argument of the command _include\_dirs_ contains a list separated by semicolons paths to directories containing header files for external libraries.
  
- Аргумент команды library\_dirs содержит в себе список разделённых точками с запятыми путей к каталогам, содержащим подключаемые внешние библиотеки.
+The argument of the command _library\_dirs_ contains a list separated by semicolons paths to directories containing external libraries.
  
-# Примеры
+# Examples
  
- Приведём примеры использования программы Мурлыка.
+Let us give examples of the program Murlyka using.
  
-## Пример 1.  
+## Example 1.  
  Пусть дан проект simple01, имеющий следующую структуру:  
 
 	simple01  
@@ -167,11 +165,12 @@ extension cpp. If command _project_ is not specified, then the name of the main 
 		$(LINKER) -o $(BIN) $(LINKOBJ) $(LINKERFLAGS)  
 		mv $(BIN) ./build
 
-# Как собрать данный проект
-Для сборки данного проекта нужна Haskell Platform. 
-При этом для сборки нужно перейти в корневой каталог данного проекта, и выполнить
+# Building of Murlyka project
+To build this project, you need to install Haskell Platform. Suppose that you installed Haskell Platform; then to build the project Murlyka, you need
 
 ```bash
+$ git clone https://github.com/gavr-vlad-s/murlyka
+$ cd murlyka
 $ cabal configure
 $ cabal build
 ```
