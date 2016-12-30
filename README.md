@@ -70,7 +70,7 @@ The argument of the command _library\_dirs_ contains a list separated by semicol
 Let us give examples of the program Murlyka using.
  
 ## Example 1.  
- Пусть дан проект simple01, имеющий следующую структуру:  
+Let 'simple01' be a project with the following strucrure:
 
 	simple01  
 		func1.cpp  
@@ -80,7 +80,8 @@ Let us give examples of the program Murlyka using.
 		simple01.cpp  
 		build
      
-Допустим, что головным файлом является simple01.cpp, а каталогом сборки - каталог build. Если в корневой каталог проекта поместить файл с именем, например, mkdescr.txt (имя может быть и любым другим, с любым другим расширением) с содержимым
+Suppose that the main file is the file 'simple01.cpp", and the build directory is the directory 'build'. If we put a file (for example, a file with the name 'mkdescr.txt') in the project root directory, and this file has the following
+contents
 
 >project(simple01)  
 >compiler(g++)  
@@ -88,7 +89,7 @@ Let us give examples of the program Murlyka using.
 >source_exts("cpp")  
 >build_dir("build")  
 
-то при подаче Мурлыке на вход этого файла получим Makefile со следующим содержимым:
+then after processing this file, we will get a Makefile with the following contents:
 
 	LINKER      = g++  
 	LINKERFLAGS = -s  
@@ -114,8 +115,8 @@ Let us give examples of the program Murlyka using.
 		$(LINKER) -o $(BIN) $(LINKOBJ) $(LINKERFLAGS)  
 		mv $(BIN) $(OBJ) ./build
 
-## Пример 2.  
-Пусть имеется проект simple02 со следующей структурой:  
+## Example 2.  
+ПLet 'simple02' be a project with the following strucrure:
 
 	simple02  
 		build  
@@ -127,8 +128,9 @@ Let us give examples of the program Murlyka using.
 			func2.cpp  
 			simple02.cpp
 
-Иными словами, файлы с расширением h находятся в каталоге include, а файлы с расширением cpp - в каталоге src.   
-Допустим, что головным файлом является simple02.cpp, а каталогом сборки - каталог build. Если в корневой каталог проекта поместить файл с именем, например, mkdescr.txt (имя может быть и любым другим, с любым другим расширением) с содержимым
+In other words, files with the file extension .h located in the directory 'include', and the files with the extension .cpp in the directory 'src'.
+Suppose that the main file is the file 'simple01.cpp", and the build directory is the directory 'build'. If we put a file (for example, a file with the name 'mkdescr.txt') in the project root directory, and this file has the following
+contents
 
 >project(simple02)  
 >compiler(g++)  
@@ -137,7 +139,7 @@ Let us give examples of the program Murlyka using.
 >source_dir("src")  
 >build_dir("build")  
 
-то при подаче Мурлыке на вход этого файла получим Makefile со следующим содержимым:  
+then after processing this file, we will get a Makefile with the following contents:
 
 	LINKER           = g++  
 	LINKERFLAGS      = -s  
@@ -174,3 +176,7 @@ $ cd murlyka
 $ cabal configure
 $ cabal build
 ```
+
+# Installing Haskell  
+## For Windows  
+Download install from 
