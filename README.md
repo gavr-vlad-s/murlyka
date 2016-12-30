@@ -179,4 +179,19 @@ $ cabal build
 
 # Installing Haskell  
 ## For Windows  
-Download install from 
+1. Download installer from <https://www.haskell.org/downloads>.  
+2. Run downloaded installer.  
+
+## For Debian and Debian-based Linux  
+Execute the following command:  
+
+```bash
+$ sudo apt-get install haskell-platform
+```  
+
+## For Arch Linux and for Arch-based Linux (e.g., Manjaro Linux)  
+Execute the following command:  
+
+```bash
+$ sudo pacman -S ghc cabal-install haskell-haddock-api haskell-haddock-library happy alex
+```
