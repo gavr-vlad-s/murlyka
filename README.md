@@ -167,6 +167,23 @@ then after processing this file, we will get a Makefile with the following conte
 		$(LINKER) -o $(BIN) $(LINKOBJ) $(LINKERFLAGS)  
 		mv $(BIN) ./build
 
+# Command line syntax  
+Command line syntax for Murlyka is  
+
+```bash
+$ murlyka option
+```
+
+or
+
+```bash
+$ murlyka files
+```
+
+Here 'option' is either `--help`, or `--version`. First of them displays help, second of them displays version info.  
+
+'files' are processed configuration files.
+
 # Building of Murlyka project
 To build this project, you need to install Haskell Platform. Suppose that you installed Haskell Platform; then to build the project Murlyka, you need
 
