@@ -70,7 +70,7 @@ The argument of the command _library\_dirs_ contains a list separated by semicol
 Let us give examples of the program Murlyka using.
  
 ## Example 1.  
-Let 'simple01' be a project with the following strucrure:
+Let 'simple01' be a project with the following structure:
 
 	simple01  
 		func1.cpp  
@@ -116,7 +116,7 @@ then after processing this file, we will get a Makefile with the following conte
 		mv $(BIN) $(OBJ) ./build
 
 ## Example 2.  
-ПLet 'simple02' be a project with the following strucrure:
+Let 'simple02' be a project with the following structure:
 
 	simple02  
 		build  
@@ -180,9 +180,7 @@ or
 $ murlyka files
 ```
 
-Here 'option' is either `--help`, or `--version`. First of them displays help, second of them displays version info.  
-
-'files' are processed configuration files.
+Here 'option' is either `--help`, or `--version`. First of them displays help, second of them displays version info; 'files' are processed configuration files.
 
 # Building of Murlyka project
 To build this project, you need to install Haskell Platform. Suppose that you installed Haskell Platform; then to build the project Murlyka, you need
